@@ -1,7 +1,3 @@
-from abc import ABC
-
-from flask_table import Table, Col, ButtonCol
-
 from flask_wtf import FlaskForm
 from wtforms import (IntegerField, StringField,
                      SelectField, SubmitField)
@@ -32,19 +28,3 @@ class BookStoreForm(FlaskForm):
                 int(year.data)
             except:
                 raise ValidationError("Year must have an integer value")
-
-
-class BookStoreTable(Table):
-    """
-    BookStoreTable is used to display books
-    from database table on the page in a Table
-    """
-    classes = ['book-store-table']
-    book_id = Col(name='book_id', show=False)
-    title = Col(name='Title')
-    author = Col(name='Author')
-    year = Col(name='Year')
-    isbn = Col(name='ISBN')
-    edit = ButtonCol(name='EDIT', endpoint='edit_book')
-    # edit = ButtonCol(name='EDIT', endpoint='edit_book',
-    #                  url_kwargs=dict(book_id='book_id'))

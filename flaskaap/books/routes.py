@@ -6,18 +6,19 @@ from flask import (render_template, redirect,
 from flaskaap import db
 from .models import Book
 from flaskaap.users.user_helper import UserHelper
-from .forms import (BookStoreForm, BookStoreTable)
+from .forms import BookStoreForm
 
 books_app = Blueprint('books_app', __name__)
 
 
 @books_app.route('/book_store', methods=['GET', 'POST'])
 def book_store():
+    page = request.args.get('page', 1, type=int)
+    books_per_page = 10
     form = BookStoreForm()
-    books = Book.query.all()
-    table = []  # TODO this is behaving strangely. FIXME. BookStoreTable(books)
+    books = Book.query.paginate(page=page, per_page=books_per_page)
     if request.method == 'GET':
-        return render_template('book_store.html', form=form, table=table)
+        return render_template('book_store.html', form=form, books=books)
     elif request.method == 'POST':
         if request.form.get("search"):
             t = form.title.data
@@ -28,18 +29,21 @@ def book_store():
             else:
                 search_result = []
                 if search_by == 'title':
-                    search_result = Book.query.filter(Book.title.ilike(f'%{t}%'))
+                    search_result = Book.query.filter(Book.title.ilike(f'%{t}%')).\
+                        paginate(page=page, per_page=books_per_page)
                 elif search_by == 'author':
-                    search_result = Book.query.filter(Book.author.ilike(f'%{t}%'))
+                    search_result = Book.query.filter(Book.author.ilike(f'%{t}%')).\
+                        paginate(page=page, per_page=books_per_page)
                 elif search_by == 'year':
-                    search_result = Book.query.filter_by(year=t)
+                    search_result = Book.query.filter_by(year=t).\
+                        paginate(page=page, per_page=books_per_page)
                 elif search_by == 'isbn':
-                    search_result = Book.query.filter_by(isbn=t)
+                    search_result = Book.query.filter_by(isbn=t).\
+                        paginate(page=page, per_page=books_per_page)
 
-                # table = BookStoreTable(search_result)
-                return render_template("book_store.html", form=form, table=table)
+                return render_template("book_store.html", form=form, books=search_result)
 
-        return render_template("book_store.html", form=form, table=table)
+        return render_template("book_store.html", form=form, books=books)
 
 
 @books_app.route('/book_admin', methods=['GET', 'POST'])
