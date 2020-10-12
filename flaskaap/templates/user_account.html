@@ -1,0 +1,42 @@
+{%extends "main_page.html"%}
+{%block content%}
+<div class="update-user-page">
+    <div class="error-message">
+            {{ error | safe }}
+    </div>
+    <form action="" method="post" novalidate enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <h1>{{current_user.name}}</h1>
+        <img  class="user_image" src="{{ image_file }}" style="width: 64px">
+        <p>
+            <div class="update-user-label">{{ form.name.label }}</div>
+            {{ form.name(size=30, class="update-user-tb") }}
+            {% for error in form.name.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div class="update-user-label">{{ form.email.label }}</div>
+            {{ form.email(size=30, class="update-user-tb") }}
+            {% for error in form.email.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div class="update-user-label">{{ form.username.label }}</div>
+            {{ form.username(size=30, class="update-user-tb") }}
+            {% for error in form.username.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            <div class="update-user-label">{{ form.image.label }}</div>
+            {{ form.image(size=30, class="update-user-tb") }}
+            {% for error in form.image.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+{%endblock%}

@@ -1,0 +1,12 @@
+{%extends "main_page.html"%}
+
+{% block content %}
+<div class="404-page">
+    <h1>Lucky You! You landed on this Error Page</h1>
+    <div class="error-message">
+        {{ error_message | safe }}
+    </div>
+    <p>Now get yourself registered and stay out of trouble.</p>
+    <a href="{{url_for('register_new_user')}}">Register New User</a>
+</div>
+{% endblock %}

@@ -1,0 +1,23 @@
+{%extends "main_page.html"%}
+{%block content%}
+<div class="book-store-page">
+    <h1>Book Store</h1>
+    <div class="error-message">
+            {{ error | safe }}
+    </div>
+    <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{form.search_by.label}}
+            {{form.search_by}}
+            {{ form.title(size=20) }}<br>
+            {{ form.search() }}
+            {% for error in form.title.errors %}<br>-->
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            {{ form.view_all() }}
+        </p>
+        {{table}}
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{%extends "main_page.html"%}
+
+{% block content %}
+<div class="login-page">
+    <h1>Sign In</h1>
+    <div class="error-message">
+        {{ error_message | safe }}
+    </div>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.username(size=30, placeholder='Username') }}
+            {% for error in form.username.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password(size=30, placeholder='Password') }}
+            {% for error in form.password.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    <a href="{{url_for('register_new_user')}}">Register New User</a>
+</div>
+{% endblock %}

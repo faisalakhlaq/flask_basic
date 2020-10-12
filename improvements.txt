@@ -1,0 +1,19 @@
+TODO create unit tests for all routes
+# Follow tests on this page for user authentication
+# http://www.patricksoftwareblog.com/user-profile/
+
+LOGIN IMPROVEMENTS
+
+    Registrations and Email Confirmations
+    Change Usernames, Change Passwords, and Forgotten Passwords
+    Role-based Authorization
+    Remember-me cookies
+    Multiple emails per user
+    Internationalization
+    Login using Gmail, Facebook, etc.
+
+REGISTER USER IMPROVEMENTS
+
+    1. Upload an image
+    2. Follow best practices for image uploading from
+    http://pallandri.blogspot.com/2020/10/image-file-storage-upload-best-practice.html

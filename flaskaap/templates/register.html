@@ -1,0 +1,52 @@
+{%extends "main_page.html"%}
+
+{% block content %}
+<div class="login-page">
+    <h1>New User Registration</h1>
+    <div class="error-message">
+        {% for error in error_message %}
+            {{ error | safe }} <br>
+        {% endfor %}
+    </div>
+    <form action="" method="post" novalidate enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.name(size=30, placeholder='Your Name') }}
+            {% for error in form.name.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.email(size=30, placeholder='Your Email') }}
+            {% for error in form.email.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.username(size=30, placeholder='Username') }}
+            {% for error in form.username.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.password(size=30, placeholder='Password') }}
+            {% for error in form.password.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.confirm_password(size=30, placeholder='Confirm Password') }}
+            {% for error in form.confirm_password.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.image() }}
+            {% for error in form.image.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</div>
+{% endblock %}

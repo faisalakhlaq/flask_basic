@@ -1,0 +1,19 @@
+CREATE TABLE person (
+	user_id serial PRIMARY KEY, 
+	name VARCHAR ( 100 ) NOT NULL, 
+	email VARCHAR ( 150 ) UNIQUE NOT NULL, 
+	username VARCHAR ( 50 ) UNIQUE NOT NULL, 
+	password VARCHAR ( 150 ) NOT NULL, 
+	created TIMESTAMP NOT NULL, 
+	last_updated TIMESTAMP,
+	image_url VARCHAR
+);
+ALTER TABLE person ADD COLUMN image_url VARCHAR;
+
+CREATE TABLE book (
+	book_id serial PRIMARY KEY,
+	title VARCHAR ( 200 ) NOT NULL,
+	author VARCHAR ( 100 ) NOT NULL,
+	year INTEGER,
+	isbn VARCHAR ( 150 )
+);

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+    <meta charset="UTF-8">
+    <title>Python Flask Page</title>
+</head>
+<body>
+    <header>
+        <div class="main-menu">
+            <div class="container">
+                <h1 class="logo">Faisal Akhlaq</h1>
+                <strong><nav>
+                    <ul class="menu">
+                        <li><a href="{{url_for('home')}}">Home</a></li>
+                        <li><a href="{{url_for('about')}}">About</a> </li>
+                        <li><a href="{{url_for('projects')}}">Projects</a> </li>
+                        {% if current_user.is_authenticated %}
+                            <li><a href="{{url_for('logout')}}">Logout</a></li>
+                        {% else %}
+                            <li><a href="{{url_for('contact')}}">Contact</a></li>
+                            <li><a href="{{url_for('login')}}">Login Page</a></li>
+                        {% endif %}
+                    </ul>
+                </nav></strong>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="flash-messages">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                  {{ message }}
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+        </div>
+        {%block content%}{%endblock%}
+    </div>
+    <div class="main-footer">
+        <div>
+            Thanks for visiting <br>
+            Developed by Faisal Akhlaq
+        </div>
+        <div>
+            Faisal Akhlaq
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{%extends "main_page.html"%}
+{%block content%}
+<div class="book-admin-page">
+    <h1>Book Admin</h1>
+    <div class="error-message">
+            {{ error | safe }}
+    </div>
+    <form method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}
+            {{ form.title(size=30) }}
+            {% for error in form.title.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.author.label }}
+            {{ form.author(size=30) }}
+            {% for error in form.author.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.year.label }}
+            {{ form.year(size=30) }}
+            {% for error in form.year.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.isbn.label }}
+            {{ form.isbn(size=30) }}
+            {% for error in form.isbn.errors %}<br>
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.clear() }}
+            {{ form.add_new() }}
+            {{ form.search() }}
+            {{ form.update() }}
+            {{ form.delete() }}
+            {{ form.view_all() }}
+        </p>
+    </form>
+</div>
+{% endblock %}
