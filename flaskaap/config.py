@@ -21,3 +21,12 @@ class Config:
     USER_ENABLE_EMAIL = False  # Disable email authentication
     USER_ENABLE_USERNAME = True  # Enable username authentication
     USER_REQUIRE_RETYPE_PASSWORD = True  # Simplify register form
+
+    # Configure email setting
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('EMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+

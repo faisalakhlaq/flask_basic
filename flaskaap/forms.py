@@ -142,3 +142,21 @@ class HeightDataForm(FlaskForm):
     submit = SubmitField('Send')
 
 
+class RequestPasswordResetForm(FlaskForm):
+    email = EmailField(validators=[DataRequired('Please enter your email address'),
+                                   Email('Please provide a valid email address'),
+                                   Length(min=3, max=150,
+                                          message='Length is 3-150 characters')])
+    submit = SubmitField('Submit')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('No account found with that email. Please register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')

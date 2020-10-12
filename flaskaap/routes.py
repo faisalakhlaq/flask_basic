@@ -5,14 +5,16 @@ from flask import render_template, redirect, request, url_for, flash
 from flask_login import (login_user, current_user,
                          logout_user, login_required)
 from functools import wraps
+from flask_mail import Message
 
-from flaskaap import db, app, bcrypt
+from flaskaap import db, app, bcrypt, mail
 from flaskaap.image_helper import save_user_image, delete_image, identical_images
 from flaskaap.models.height_data import Data
 from flaskaap.models.user import User
 from flaskaap.models.book import Book
-from flaskaap.forms import RegisterNewUserForm, LoginForm, \
-    HeightDataForm, UpdateAccountForm, BookStoreForm, BookStoreTable
+from flaskaap.forms import (RegisterNewUserForm, LoginForm, HeightDataForm,
+                            UpdateAccountForm, BookStoreForm, BookStoreTable,
+                            RequestPasswordResetForm, ResetPasswordForm)
 from flaskaap.email_sender import EmailSender
 from flaskaap.helpers.user_helper import UserHelper
 
@@ -32,9 +34,8 @@ def is_admin(f):
 @app.route('/register_new_user', methods=['GET', 'POST'])
 def register_new_user():
     if current_user.is_authenticated:
-        flash('You should be logged out in order to register')
+        flash('Please logout to register as a new user')
         return redirect(request.referrer)
-        # return redirect(url_for('home'))
     form = RegisterNewUserForm()
     if request.method == 'GET':
         return render_template('register.html', form=form)
@@ -63,7 +64,8 @@ def register_new_user():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        flash('You are already logged-in')
+        return redirect(request.referrer)
     form = LoginForm()
     if request.method == 'GET':
         return render_template('login.html', form=form)
@@ -307,3 +309,46 @@ def contact():
 @app.route('/projects')
 def projects():
     return render_template("projects.html")
+
+
+def send_password_reset_email(user):
+    token = user.get_reset_token()
+    msg = Message('Password Reset Request',
+                  sender="ItsPythonTester@gmail.com",
+                  recipients=[user.email])
+    msg.body = f'''To reset your password please visit following link: 
+{url_for('reset_password', token=token, _external=True)}
+If you did not make this request then please discard this email.'''
+    mail.send(msg)
+
+
+@app.route('/request_password_reset', methods=['GET', 'POST'])
+def request_password_reset():
+    if current_user.is_authenticated:
+        flash("Please logout and then try to reset the password")
+        return redirect(request.referrer)
+    form = RequestPasswordResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_password_reset_email(user=user)
+        return redirect(url_for('login'))
+    return render_template("reset_password_request.html", form=form)
+
+
+@app.route('/reset_password<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    if current_user.is_authenticated:
+        flash("Please logout and then try to reset the password")
+        return redirect(request.referrer)
+    user = User.verify_reset_token(token=token)
+    if not user:
+        flash("Sorry your token is invalid or expired!")
+        return redirect(url_for('reset_password'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template("reset_password.html", form=form)
