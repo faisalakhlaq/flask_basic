@@ -1,5 +1,10 @@
+from functools import wraps
+from flask import url_for, flash, redirect, request
+from flask_mail import Message
 from flask_login import current_user
-from flaskaap.image_helper import identical_images
+
+from .image_helper import identical_images
+from flaskaap import mail
 
 
 class UserHelper:
@@ -22,7 +27,8 @@ class UserHelper:
             return False
         return True
 
-    def is_user_image_updated(self, new_image):
+    @staticmethod
+    def is_user_image_updated(new_image):
         """
         Check if the given image is None or empty or identical to current user image
         :param new_image:
@@ -31,3 +37,29 @@ class UserHelper:
         if not new_image or new_image.filename == '' or identical_images(new_image):
             return False
         return True
+
+    @staticmethod
+    def send_password_reset_email(user):
+        token = user.get_reset_token()
+        msg = Message('Password Reset Request',
+                      sender="ItsPythonTester@gmail.com",
+                      recipients=[user.email])
+        msg.body = f'''To reset your password please visit following link: 
+    {url_for('users.reset_password', token=token, _external=True)}
+    If you did not make this request then please discard this email.'''
+        mail.send(msg)
+
+    @staticmethod
+    def is_admin(f):
+        """Decorator checks if the user has a role of admin"""
+        @wraps(f)
+        def wrap(*args, **kwargs):
+            if 'admin' in [role.name for role in current_user.roles]:
+                return f(*args, **kwargs)
+            else:
+                flash("Sorry, Admin Rights Required!")
+                return redirect(request.referrer)
+        return wrap
+
+
+

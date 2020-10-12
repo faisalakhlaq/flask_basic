@@ -2,7 +2,7 @@ from os import path
 from pathlib import Path
 import imghdr
 import secrets
-from flaskaap import app
+from flask import current_app
 from PIL import Image
 import imagehash
 from werkzeug.utils import secure_filename
@@ -31,7 +31,7 @@ def get_file_format(stream):
 
 def is_allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1].lower() in current_app.config['ALLOWED_EXTENSIONS']
 
 
 def save_user_image(file):
@@ -51,7 +51,7 @@ def save_user_image(file):
         return None
     if not is_allowed_file(file.filename):
         raise TypeError("This file type is not allowed.\n Allowed types:",
-                        app.config['ALLOWED_EXTENSIONS'])
+                        current_app.config['ALLOWED_EXTENSIONS'])
     # analyze the file to check if the format
     # is similar to what the image name represents
     detected_format = get_file_format(file.stream)
@@ -85,7 +85,7 @@ def get_image_storage_path(image_file_name):
     # basedir = path.abspath(path.dirname(__file__))
     # file_path = path.join(basedir, app.config['IMAGE_FOLDER'], filename)
     # file.save(file_path)
-    picture_path = path.join(app.root_path, app.config['IMAGE_FOLDER'], image_file_name)
+    picture_path = path.join(current_app.root_path, current_app.config['IMAGE_FOLDER'], image_file_name)
     return picture_path
 
 
@@ -123,7 +123,6 @@ def identical_images(image):
     hash1 = imagehash.average_hash(
         Image.open(get_image_storage_path(current_user.image_url)))
     cutoff = 2
-
     if hash0 - hash1 < cutoff:
         return True
     else:

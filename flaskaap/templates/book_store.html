@@ -3,7 +3,7 @@
 <div class="book-store-page">
     <h1>Book Store</h1>
     <div class="error-message">
-            {{ error | safe }}
+            {{ error_message | safe }}
     </div>
     <form method="post" novalidate>
         {{ form.hidden_tag() }}

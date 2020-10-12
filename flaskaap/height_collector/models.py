@@ -1,7 +1,7 @@
-from .. import db
+from flaskaap import db
 
 
-class Data(db.Model):
+class Height_Data(db.Model):
     __tablename__ = "data"
     id = db.Column(db.Integer, primary_key=True)
     name_ = db.Column(db.String(70))

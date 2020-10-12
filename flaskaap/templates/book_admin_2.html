@@ -8,11 +8,11 @@ height:50px;
 display:block;
 </style>
 <div class="book-admin-page">
-    <h1>Book Store</h1>
+    <h1>Admin Book Store</h1>
 </div>
 <div class="book-admin-page">
         <div class="error-message">
-            {{ error | safe }}
+            {{ error_message | safe }}
     </div>
     <form method="post" novalidate>
         {{ form.hidden_tag() }}
@@ -87,9 +87,9 @@ display:block;
     {% for page_num in books.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
         {% if page_num %}
         {% if books.page == page_num %}
-          <a class="" href="{{ url_for('book_admin', page=page_num) }}">{{ page_num }}</a>
+          <a class="" href="{{ url_for('books_app.book_admin', page=page_num) }}">{{ page_num }}</a>
         {% else %}
-          <a class="" href="{{ url_for('book_admin', page=page_num) }}">{{ page_num }}</a>
+          <a class="" href="{{ url_for('books_app.book_admin', page=page_num) }}">{{ page_num }}</a>
         {% endif %}
         {% else %}
          ...
@@ -100,12 +100,12 @@ display:block;
 
     <ul class="pagination">
         {% if books.has_prev %}
-          <div class="page-item"> <a class="page-link" href="{{ url_for('book_admin', page=books.prev_num) }}">Previous</a></div>
+          <div class="page-item"> <a class="page-link" href="{{ url_for('books_app.book_admin', page=books.prev_num) }}">Previous</a></div>
         {% else %}
           <div class="page-item"><a class="page-link btn disabled" href="#">Previous</a></div>
         {% endif %}
         {% if books.has_next %}
-          <div class="page-item"> <a class="page-link" href="{{ url_for('book_admin', page=books.next_num) }}">Next</a></div>
+          <div class="page-item"> <a class="page-link" href="{{ url_for('books_app.book_admin', page=books.next_num) }}">Next</a></div>
         {% else %}
           <div class="page-item"><a class="page-link btn disabled" href="#">Next</a></div>
         {% endif %}

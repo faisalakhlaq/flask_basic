@@ -1,12 +1,13 @@
 from email.mime.text import MIMEText
 import smtplib
+import os
 
 
 class EmailSender:
-
-    def send_height_data_email(self, name, email, height):
-        from_email = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
-        from_pass = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    @staticmethod
+    def send_height_data_email(name, email, height):
+        from_email = os.environ.get('EMAIL_USER')
+        from_pass = os.environ.get('EMAIL_PASS')
         to_email = email
 
         subject = "Height Data"
