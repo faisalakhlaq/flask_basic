@@ -15,12 +15,12 @@ books_app = Blueprint('books_app', __name__)
 def book_store():
     form = BookStoreForm()
     books = Book.query.all()
-    table = BookStoreTable(books)
+    table = []  # TODO this is behaving strangely. FIXME. BookStoreTable(books)
     if request.method == 'GET':
         return render_template('book_store.html', form=form, table=table)
     elif request.method == 'POST':
-        t = form.title.data
         if request.form.get("search"):
+            t = form.title.data
             search_by = form.search_by.data
             if not t or len(t.strip()) == 0 or search_by.strip() == '0':
                 flash("We cannot find out what you want to search! Please Try again")
@@ -36,7 +36,7 @@ def book_store():
                 elif search_by == 'isbn':
                     search_result = Book.query.filter_by(isbn=t)
 
-                table = BookStoreTable(search_result)
+                # table = BookStoreTable(search_result)
                 return render_template("book_store.html", form=form, table=table)
 
         return render_template("book_store.html", form=form, table=table)

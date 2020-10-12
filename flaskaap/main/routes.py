@@ -3,13 +3,6 @@ from flask import Blueprint, render_template, url_for
 main = Blueprint('main', __name__)
 
 
-# TODO change the name of error page
-@main.errorhandler(404)
-def error_page(e):
-    print(e)
-    return render_template("404.html", error_message=e)
-
-
 @main.route('/')
 @main.route('/home')
 def home():

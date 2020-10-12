@@ -24,12 +24,14 @@ def create_app(config_class=Config):
 
     from flaskaap.main.routes import main
     from flaskaap.users.routes import users
+    from flaskaap.errors.handlers import errors
     from flaskaap.books.routes import books_app
     from flaskaap.height_collector.routes import height_collector
     flask_app.register_blueprint(main)
     flask_app.register_blueprint(users)
     flask_app.register_blueprint(books_app)
     flask_app.register_blueprint(height_collector)
+    flask_app.register_blueprint(errors)
 
     return flask_app
 

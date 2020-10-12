@@ -1,0 +1,13 @@
+{%extends "main_page.html"%}
+
+{% block content %}
+<div class="404-page">
+    <h3>Lucky You! You landed on this Error Page</h3>
+    <h1>Oops. Something went wrong (500)</h1>
+    <div class="error-message">
+        {{ error_message | safe }}
+    </div>
+    <p>We are experiencing some trouble at our end.</p>
+    <p>Please try again later.</p>
+</div>
+{% endblock %}

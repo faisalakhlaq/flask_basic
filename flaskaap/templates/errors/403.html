@@ -1,0 +1,13 @@
+{%extends "main_page.html"%}
+
+{% block content %}
+<div class="404-page">
+    <h3>Lucky You! You landed on this Error Page</h3>
+    <h1>Wow. You don't have permission for that yet (403)</h1>
+    <div class="error-message">
+        {{ error_message | safe }}
+    </div>
+    <p>Please check your account and try again</p>
+    <p>Click on another link in the menu bar and get yourself out of here.</p>
+</div>
+{% endblock %}
